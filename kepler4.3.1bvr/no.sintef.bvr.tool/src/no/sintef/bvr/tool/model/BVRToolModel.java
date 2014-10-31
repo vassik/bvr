@@ -343,5 +343,10 @@ abstract public class BVRToolModel {
 		throw new UnexpectedException("Are you using default implementation?!");
 	}
 
+	public void AddMultipleInstanceTrees(VSpecResolution parent, VClassifier newElement, int parseInt) {
+		throw new UnexpectedException("Are you using default implementation?!");
+		
+	}
+
 
 }

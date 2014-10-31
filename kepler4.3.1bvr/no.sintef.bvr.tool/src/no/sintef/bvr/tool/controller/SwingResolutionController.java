@@ -1,5 +1,6 @@
 package no.sintef.bvr.tool.controller;
 
+import java.awt.Component;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D.Double;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
@@ -30,6 +32,7 @@ import no.sintef.bvr.tool.ui.command.AddChoiceResolutionFromVClassifier;
 //import no.sintef.bvr.tool.ui.command.AddBCLConstraint;
 //import no.sintef.bvr.tool.ui.command.AddGroupMultiplicity;
 import no.sintef.bvr.tool.ui.command.AddOpaqueConstraint;
+import no.sintef.bvr.tool.ui.command.event.AddMultipleInstanceTreesEvent;
 import no.sintef.bvr.tool.ui.dropdown.ResolutionDropdownListener;
 import no.sintef.bvr.tool.ui.editor.BVRUIKernel;
 import no.sintef.bvr.tool.ui.loader.BVRResolutionView;
@@ -73,6 +76,7 @@ import bvr.NamedElement;
 import bvr.NegResolution;
 import bvr.OpaqueConstraint;
 import bvr.PosResolution;
+import bvr.VClassifier;
 import bvr.VSpec;
 import bvr.VSpecResolution;
 
@@ -485,6 +489,39 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		NamedElement parent = getElementInCurrentPane(_parent);
 		VSpec newElement = (VSpec) _newElement;
 		toolModel.addChoiceResolutionTree((VSpecResolution) parent, newElement);
+	}
+
+	@Override
+	public void addMultipleTreesFromDialog(GUI_NODE _parent, MODEL_OBJECT toResolve) {
+		NamedElement parent = getElementInCurrentPane(_parent);
+		VClassifier newElement = (VClassifier) toResolve;
+		int currentInstances = 0;
+		
+		Component cParent = Context.eINSTANCE.getActiveJApplet();
+		Object[] possibilities = null;
+
+		// create Dialog
+		String requestedInstancesAsString = (String) JOptionPane.showInputDialog(cParent, "Set nr of VInstances to add, min total: "
+				+ newElement.getInstanceMultiplicity().getLower() + " max total: "
+				+ ((newElement.getInstanceMultiplicity().getUpper() == -1) ? "*" : newElement.getInstanceMultiplicity().getUpper()) + "\n"
+				+ "nr of instances left to add: "
+				+ ((newElement.getInstanceMultiplicity().getUpper() == -1) ? "*" : (newElement.getInstanceMultiplicity().getUpper() - currentInstances)),
+				"Customized Dialog", JOptionPane.PLAIN_MESSAGE, null, possibilities, null);
+
+		// If a string was returned, say so.
+		if ((requestedInstancesAsString != null) && (requestedInstancesAsString.length() > 0)) {
+			toolModel.AddMultipleInstanceTrees((VSpecResolution) parent, newElement, Integer.parseInt(requestedInstancesAsString));
+		}
+		
+	}
+
+	@Override
+	public void addMultipleTrees(int _instancesRequested, GUI_NODE _parent, MODEL_OBJECT target) {
+		NamedElement parent = getElementInCurrentPane(_parent);
+		VClassifier newElement = (VClassifier) target;
+		int instancesRequested = _instancesRequested;
+		if(instancesRequested > 0)
+			toolModel.AddMultipleInstanceTrees((VSpecResolution) parent, newElement, instancesRequested);
 	}
 
 }

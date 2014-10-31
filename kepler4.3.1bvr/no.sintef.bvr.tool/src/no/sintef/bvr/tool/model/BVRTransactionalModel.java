@@ -980,4 +980,10 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 		ResolutionModelIterator.getInstance().iterateEmptyOnChildren(this, new AddResolution(), target, root, false);
 		Context.eINSTANCE.getEditorCommands().addChoiceResoulution(parent, root);
 	}
+	@Override
+	public void AddMultipleInstanceTrees(VSpecResolution parent, VClassifier newElement, int instancesRequested) {
+		for (int i = 0; i<instancesRequested; i++){
+			addChoiceResolutionTree((VSpecResolution) parent, newElement);
+		}
+	}
 }

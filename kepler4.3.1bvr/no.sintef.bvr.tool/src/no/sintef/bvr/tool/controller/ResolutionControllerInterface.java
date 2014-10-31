@@ -5,7 +5,9 @@ import javax.swing.JComponent;
 
 import org.eclipse.emf.ecore.EObject;
 
+import bvr.VClassifier;
 import bvr.VSpec;
+import bvr.VSpecResolution;
 
 import java.util.List;
 
@@ -41,5 +43,9 @@ public interface ResolutionControllerInterface <GUI_NODE, MODEL_OBJECT>{
 	public void toggleShowGroups();
 
 	public void addChoiceTree(GUI_NODE parent, MODEL_OBJECT newElement);
+
+	public void addMultipleTreesFromDialog(GUI_NODE parent, MODEL_OBJECT toResolve);
+
+	public void addMultipleTrees(int instancesRequested, GUI_NODE parent, MODEL_OBJECT target);
 
 }
