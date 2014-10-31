@@ -5,6 +5,8 @@ import javax.swing.JComponent;
 
 import org.eclipse.emf.ecore.EObject;
 
+import bvr.VSpec;
+
 import java.util.List;
 
 import no.sintef.bvr.tool.controller.command.SimpleExeCommandInterface;
@@ -37,5 +39,7 @@ public interface ResolutionControllerInterface <GUI_NODE, MODEL_OBJECT>{
 	public void resolveSubtree(GUI_NODE parent);
 
 	public void toggleShowGroups();
+
+	public void addChoiceTree(GUI_NODE parent, MODEL_OBJECT newElement);
 
 }

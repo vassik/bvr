@@ -1,10 +1,15 @@
-package no.sintef.bvr.ui.editor.mvc.resolutionV2.event;
+package no.sintef.bvr.tool.ui.command.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JComponent;
+
+import org.antlr.v4.tool.ToolMessage;
+
 import no.sintef.bvr.common.CommonUtility;
 import no.sintef.bvr.tool.context.Context;
+import no.sintef.bvr.tool.controller.BVRNotifiableController;
 import no.sintef.bvr.tool.controller.BVRResolutionToolView;
 import no.sintef.bvr.tool.controller.command.AddResolution;
 import no.sintef.bvr.tool.model.BVRToolModel;
@@ -17,25 +22,20 @@ import bvr.VSpecResolution;
 
 public class AddChoicesFromVClassifierTreeEvent implements ActionListener {
 
-	private BVRToolModel view;
+	private BVRNotifiableController view;
 	private VSpec target;
-	VSpecResolution c;
+	JComponent parent;
 
-	public AddChoicesFromVClassifierTreeEvent(VSpecResolution parent, VSpec target, BVRToolModel view) {
+	public AddChoicesFromVClassifierTreeEvent(JComponent parent, VSpec target, BVRNotifiableController view) {
 
 		this.view = view;
 		this.target = target;
-		this.c = parent;
+		this.parent = parent;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent arg0) {
-
-		  PosResolution root = BvrFactory.eINSTANCE.createPosResolution();
-		  CommonUtility.setResolved(root, target);
-
-		  root.setName("I" + view.getIncrementedInstanceCount());
-		  //ResolutionModelIterator.getInstance().iterateEmptyOnChildren(view, new AddResolution(), target, root, false);
-		//  Context.eINSTANCE.getEditorCommands().addPosChoiceResoulution(c, root);
+		view.getResolutionControllerInterface().addChoiceTree(parent, target);
 		 
 	}
 

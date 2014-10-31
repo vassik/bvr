@@ -14,6 +14,7 @@ import no.sintef.bvr.tool.ui.command.ChangeVSpecResolvedEvent;
 import no.sintef.bvr.tool.ui.command.SetDecisionEvent;
 import no.sintef.bvr.tool.ui.command.event.AddChoiceResolvedEvent;
 import no.sintef.bvr.tool.ui.command.event.AddChoiceFromVClassifierEvent;
+import no.sintef.bvr.tool.ui.command.event.AddChoicesFromVClassifierTreeEvent;
 import no.sintef.bvr.tool.ui.command.event.AddSubTreeEvent;
 import no.sintef.bvr.tool.ui.command.event.AddValueResolutionEvent;
 import no.sintef.bvr.tool.ui.command.event.MaximizeVSpecEvent;
@@ -117,7 +118,7 @@ class ChoiceResolutionDropdown extends JPopupMenu {
 				for (VNode x : ((CompoundNode) (c.getResolvedVSpec())).getMember()) {
 					JMenuItem addChild = new JMenuItem(((VSpec) x).getName());
 					if (x instanceof VClassifier) {
-						//TODO addChild.addActionListener(new AddChoicesFromVClassifierTreeEvent(c, (VClassifier) x, view));
+						addChild.addActionListener(new AddChoicesFromVClassifierTreeEvent(cp, (VClassifier) x, controller));
 						addTree.add(addChild);
 					}
 				}

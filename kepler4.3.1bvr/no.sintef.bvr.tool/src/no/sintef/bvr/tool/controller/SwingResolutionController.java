@@ -480,4 +480,11 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		toolModel.setShowGroupingInResolutionView(!toolModel.isShowGroupingInResolutionView());
 	}
 
+	@Override
+	public void addChoiceTree(GUI_NODE _parent, MODEL_OBJECT _newElement) {
+		NamedElement parent = getElementInCurrentPane(_parent);
+		VSpec newElement = (VSpec) _newElement;
+		toolModel.addChoiceResolutionTree((VSpecResolution) parent, newElement);
+	}
+
 }

@@ -1,4 +1,4 @@
-package no.sintef.bvr.ui.editor.mvc.resolutionV2.event;
+package no.sintef.bvr.tool.ui.command.event;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;

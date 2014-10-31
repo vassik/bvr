@@ -333,12 +333,14 @@ abstract public class BVRToolModel {
 
 	public void toggleChoice(NamedElement toToggle) {
 		throw new UnexpectedException("Are you using default implementation?!");
-		
 	}
 
 	public void removeVSpecResolution(NamedElement toDelete) {
 		throw new UnexpectedException("Are you using default implementation?!");
-		
+	}
+
+	public void addChoiceResolutionTree(VSpecResolution parent, VSpec target) {
+		throw new UnexpectedException("Are you using default implementation?!");
 	}
 
 

@@ -921,6 +921,8 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 		}
 
 	}
+
+	@Override
 	public void resolveSubtree(VSpecResolution parent) {
 		VSpecResolution grandParent = ResolutionModelIterator.getInstance().getParent(getBVRModel(), (VSpecResolution) parent);
 		if (grandParent == null) {
@@ -954,25 +956,28 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 
 			} else if (parent instanceof VInstance) {
 				Context.eINSTANCE.getEditorCommands().addVInstance(grandParent, (VInstance) root);
-				
-				
-
 			}*/
 		}
 		
 	}
-
+	@Override
 	public void removeVSpecResolution(NamedElement toDelete) {
 		NamedElement parentNamedElement = ResolutionModelIterator.getInstance().getParent(getBVRModel(), (VSpecResolution) toDelete);
 			Context.eINSTANCE.getEditorCommands().removeNamedElementVSpecResolution((VSpecResolution) parentNamedElement, toDelete);
-		
 	}
-
+	@Override
 	public void toggleChoice(NamedElement toToggle) {
 		if (toToggle instanceof ChoiceResolution) {
 			ChangeChoiceFacade.setChoiceResolution((ChoiceResolution) toToggle, !(toToggle instanceof PosResolution), this);
 			InheritanceFacade.getInstance().passInheritance((ChoiceResolution) toToggle, true, this);
 		}
-		
+	}
+	@Override
+	public void addChoiceResolutionTree(VSpecResolution parent, VSpec target){
+		PosResolution root = BvrFactory.eINSTANCE.createPosResolution();
+		CommonUtility.setResolved(root, target);
+		root.setName("I " + this.getIncrementedInstanceCount());
+		ResolutionModelIterator.getInstance().iterateEmptyOnChildren(this, new AddResolution(), target, root, false);
+		Context.eINSTANCE.getEditorCommands().addChoiceResoulution(parent, root);
 	}
 }
