@@ -427,7 +427,9 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 			Target target = TargetFacade.eINSTANCE.testVSpecTarget((VSpec) namedElement);
 			Context.eINSTANCE.getEditorCommands().setName(target, name);
 		}
-		if (!namedElement.getName().equals(name)) {
+
+		if(namedElement.getName() == null || !namedElement.getName().equals(name)){
+
 			Context.eINSTANCE.getEditorCommands().setName(namedElement, name);
 		}
 	}
