@@ -11,6 +11,8 @@ import bvr.NamedElement;
 import no.sintef.bvr.tool.controller.BVRNotifiableController;
 //TODO import no.sintef.bvr.tool.ui.command.AddVInstance;
 import no.sintef.bvr.tool.controller.command.Command;
+import no.sintef.bvr.tool.controller.command.SelectInstanceCommand;
+import no.sintef.bvr.tool.ui.dropdown.ChoiceResolutionDropDownListener;
 import no.sintef.bvr.tool.ui.editor.BVRUIKernel;
 import no.sintef.bvr.tool.ui.loader.BVRResolutionView;
 import no.sintef.bvr.tool.ui.loader.Pair;
@@ -47,17 +49,17 @@ public class AddChoiceResolutionFromVClassifier implements Command {
 		nodes.add(cp);
 
 		CommandMouseListener listener = new CommandMouseListener();
-		// SelectInstanceCommandV2 command = new SelectInstanceCommandV2();
-		// command.init(rootPanel, c, parent, vmMap, nodes, bindings, view);
+		 SelectInstanceCommand command = new SelectInstanceCommand();
+		 command.init(rootPanel, cp, parent, vmMap, nodes, bindings, view);
 		// listener.setLeftClickCommand(command);
 	//TODO	ToggleChoiceCommand command = new ToggleChoiceCommand();
 	//	command.init(view, null, cr, true);
 	//	listener.setLeftClickCommand(command);
 
-		//TODO cp.addMouseListener(new ChoiceResolutionDropDownListener(cp, cr, vmMap, view));
+		cp.addMouseListener(new ChoiceResolutionDropDownListener(cp, cr, vmMap, view));
 		cp.addMouseListener(listener);
 
-		// MultiplicityInterval m = cr.getResolvedVClassifier().getInstanceMultiplicity();
+		MultiplicityInterval m = cr.getResolvedVClassifier().getInstanceMultiplicity();
 
 		// I would prefer not to mix concerns (here validation. We should assume a valid BVR model as input).
 		/*

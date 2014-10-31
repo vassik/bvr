@@ -15,6 +15,8 @@ import no.sintef.bvr.common.CommonUtility;
 import no.sintef.bvr.tool.context.Context;
 import no.sintef.bvr.tool.controller.BVRNotifiableController;
 import no.sintef.bvr.tool.controller.BVRToolAbstractController;
+import no.sintef.bvr.tool.controller.command.AddErrorGroup;
+import no.sintef.bvr.tool.controller.command.AddGroupMultiplicity;
 import no.sintef.bvr.tool.controller.command.AddMissingResolutions;
 import no.sintef.bvr.tool.controller.command.AddResolution;
 import no.sintef.bvr.tool.controller.command.Command;
@@ -63,8 +65,10 @@ import org.eclipse.emf.ecore.EObject;
 import bvr.BCLConstraint;
 import bvr.BVRModel;
 import bvr.ChoiceResolution;
+import bvr.CompoundNode;
 import bvr.CompoundResolution;
 import bvr.Constraint;
+import bvr.MultiplicityInterval;
 import bvr.NamedElement;
 import bvr.NegResolution;
 import bvr.OpaqueConstraint;
@@ -78,8 +82,7 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 	private List<Constraint> invalidConstraints;
 
 	public JTabbedPane modelPane;
-	private boolean showGroups;
-	private boolean showConstraints;
+
 
 	// Resolutions
 	public JTabbedPane resPane;
@@ -94,11 +97,6 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 
 	// namecounters
 	private int choiceCount = 1;
-	private int instanceNameCounter;
-
-	// draw variables
-	private List<VSpecResolution> minimized = new ArrayList<VSpecResolution>();
-	private List<VSpecResolution> stripped = new ArrayList<VSpecResolution>();
 
 	private ResolutionLayoutStrategy strategy;
 
@@ -114,8 +112,7 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		strategy = new ResolutionLayoutStrategy(resolutionNodes, resolutionBindings, (ArrayList<JScrollPane>) resolutionPanes);
 		this.toolModel = model;
 		this.rootController = controller;
-		this.showGroups = true;
-		this.showConstraints = false;
+
 		this.invalidConstraints = new ArrayList<Constraint>();
 
 		bvrModelSubject = new BVRModelSubject(toolModel.getBVRModel());
@@ -191,14 +188,14 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		if (CommonUtility.isVSpecResolutionVClassifier(v)) {
 			// System.out.println(v + ", " + bvruikernel);
 
-			nextParent = new AddChoiceResolutionFromVClassifier(minimized.contains(v), childrenStripped(v, printAnyway, secondPrint)).init(
+			nextParent = new AddChoiceResolutionFromVClassifier(toolModel.isVSpecResolutionMinimized(v), childrenStripped(v, printAnyway, secondPrint)).init(
 					bvruikernel, v, parent, vmMap, nodes, bindings, rootController).execute();
 
 			vmMap.put(nextParent, v);
 
 		} else if (v instanceof ChoiceResolution) {
 			// System.out.println(v);
-			nextParent = new AddChoiceResolution(minimized.contains(v), childrenStripped(v, printAnyway, secondPrint)).init(bvruikernel, v, parent,
+			nextParent = new AddChoiceResolution(toolModel.isVSpecResolutionMinimized(v), childrenStripped(v, printAnyway, secondPrint)).init(bvruikernel, v, parent,
 					vmMap, nodes, bindings, rootController).execute();
 
 			vmMap.put(nextParent, v);
@@ -220,7 +217,7 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		 */else {
 			throw new BVRModelException("Unknown element: " + v.getClass());
 		}
-		if (!minimized.contains(v)) {// TODO add show/hide visuals
+		if (!toolModel.isVSpecResolutionMinimized(v)) {// TODO add show/hide visuals
 			/*
 			 * if (showConstraints) { for (Constraint c : bvrModel.getVariabilityModel().getOwnedConstraint()) { /* if (c instanceof OpaqueConstraint)
 			 * { if (((OpaqueConstraint) c).getConstraint() == v.getResolvedVSpec()) { if (invalidConstraints.contains(c)) { JComponent con = new
@@ -246,17 +243,22 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 
 			// TODO
 
-			/*
-			 * if (showGroups) {
-			 * 
-			 * if (((CompoundResolution) v).getGroupMultiplicity() != null) { boolean error = findGroupError(v);
-			 * 
-			 * if (error) { nextParent = new AddErrorGroup().init(bvruikernel, v.getResolvedVSpec(), nextParent, vmMap, nodes, bindings,
-			 * this).execute(); if (!secondPrint) printAnyway = true; } else { nextParent = new AddGroupMultiplicity().init(bvruikernel,
-			 * v.getResolvedVSpec(), nextParent, vmMap, nodes, bindings, this) .execute();
-			 * 
-			 * } } }
-			 */
+			if (toolModel.isShowGroupingInResolutionView()) {
+
+				if (((CompoundNode) v.getResolvedVSpec()).getGroupMultiplicity() != null) {
+					boolean error = findGroupError(v);
+
+					if (error) {
+						nextParent = new AddErrorGroup().init(bvruikernel, v.getResolvedVSpec(), nextParent, vmMap, nodes, bindings, rootController).execute();
+						//if (!secondPrint)
+						//	printAnyway = true;
+					} else {
+						nextParent = new AddGroupMultiplicity().init(bvruikernel, v.getResolvedVSpec(), nextParent, vmMap, nodes, bindings, rootController)
+								.execute();
+
+					}
+				}
+			}
 
 		}
 
@@ -264,7 +266,7 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		// System.out.println();
 		if (v instanceof CompoundResolution)
 			for (VSpecResolution vs : ((CompoundResolution) v).getMembers()) {
-				if (!minimized.contains(v)) {
+				if (!toolModel.isVSpecResolutionMinimized(v)) {
 					loadBVRResolutionView(vs, bvruikernel, nextParent, bvrModel, vmMap, nodes, bindings, printAnyway, secondPrint);
 
 				}
@@ -336,13 +338,27 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 	}
 
 	private boolean findGroupError(VSpecResolution v) {
+		MultiplicityInterval groupM = null;
+		if (v.getResolvedVSpec() instanceof CompoundNode)
+			groupM = ((CompoundNode) v.getResolvedVSpec()).getGroupMultiplicity();
+		if (groupM == null)
+			return false;
+		int lower = groupM.getLower();
+		int upper = groupM.getUpper();
+		int i = 0;
+		for (VSpecResolution x : ((CompoundResolution) v).getMembers()) {
+			if (x instanceof ChoiceResolution) {
+				if (((ChoiceResolution) x) instanceof PosResolution)
+					i++;
+				if ((i > upper) && (upper != -1)) {
+					return true;
+				}
+			}
+		}
+		if (i < lower)
+			return true;
 		return false;
-		/*
-		 * if (v.getResolvedVSpec().getGroupMultiplicity() == null) return false; int lower = v.getResolvedVSpec().getGroupMultiplicity().getLower();
-		 * int upper = v.getResolvedVSpec().getGroupMultiplicity().getUpper(); int i = 0; for (VSpecResolution x : v.getChild()) { if (x instanceof
-		 * ChoiceResolution) { if (((ChoiceResolution) x).isDecision()) i++; if ((i > upper) && (upper != -1)){ return true; } } } if (i < lower)
-		 * return true; return false;
-		 */
+
 	}
 
 	public JTabbedPane getResolutionPane() {
@@ -457,6 +473,11 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 
 		toolModel.resolveSubtree(parent);
 
+	}
+
+	@Override
+	public void toggleShowGroups() {
+		toolModel.setShowGroupingInResolutionView(!toolModel.isShowGroupingInResolutionView());
 	}
 
 }

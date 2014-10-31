@@ -41,6 +41,14 @@ abstract public class BVRToolModel {
 	protected List<VSpec> minimizedVSpec;
 	protected List<VSpecResolution> minimizedVSpecResolution;
 	static private int instanceCount = 0;
+	protected boolean showGroupingInResolutionView = false;
+	public boolean isShowGroupingInResolutionView() {
+		return showGroupingInResolutionView;
+	}
+
+	public void setShowGroupingInResolutionView(boolean showGroupingInResolutionView) {
+		this.showGroupingInResolutionView = showGroupingInResolutionView;
+	}
 
 	public int getIncrementedInstanceCount() {
 		return instanceCount++;
@@ -332,8 +340,6 @@ abstract public class BVRToolModel {
 		throw new UnexpectedException("Are you using default implementation?!");
 		
 	}
-
-	
 
 
 }

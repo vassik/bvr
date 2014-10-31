@@ -36,4 +36,6 @@ public interface ResolutionControllerInterface <GUI_NODE, MODEL_OBJECT>{
 
 	public void resolveSubtree(GUI_NODE parent);
 
+	public void toggleShowGroups();
+
 }

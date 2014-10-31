@@ -16,8 +16,11 @@ import javax.swing.JTabbedPane;
 
 
 
+
+
 import no.sintef.bvr.tool.ui.command.event.ExportModelImage;
 import no.sintef.bvr.tool.ui.command.event.NewResolvedResolutionEvent;
+import no.sintef.bvr.tool.ui.command.event.ToggleShowGroupEvent;
 import no.sintef.bvr.tool.controller.BVRResolutionToolView;
 import no.sintef.bvr.tool.model.BVRToolModel;
 import no.sintef.bvr.tool.ui.loader.CalculateCost;
@@ -27,7 +30,6 @@ import no.sintef.bvr.tool.ui.loader.GenerateCoveringArray;
 import no.sintef.bvr.tool.ui.loader.ImportResolutions;
 import no.sintef.bvr.tool.ui.loader.SATValidateResolutions;
 import no.sintef.bvr.ui.editor.mvc.resolutionV2.event.ToggleShowConstraintsEvent;
-import no.sintef.bvr.ui.editor.mvc.resolutionV2.event.ToggleShowGroupEvent;
 import bvr.BVRModel;
 //import bvr.ConfigurableUnit;
 import bvr.NamedElement;
