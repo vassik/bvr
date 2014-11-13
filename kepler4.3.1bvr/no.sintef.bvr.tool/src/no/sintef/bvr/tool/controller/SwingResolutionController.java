@@ -135,6 +135,12 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		if (CommonUtility.isVSpecResolutionVClassifier(v)) {
 			nextParent = new AddChoiceResolutionFromVClassifier(toolModel.isVSpecResolutionMinimized(v)).init(
 					bvruikernel, v, parent, vmMap, nodes, bindings, rootController).execute();
+			if(toolModel.showGrouping())
+				nextParent = new ShowMultiplicityTriangleResolution().init(bvruikernel, v, nextParent,
+					vmMap, nodes, bindings, rootController).execute();
+			if(toolModel.showConstraints())
+				new ShowInValidConstraintsResolution().init(bvruikernel, v, nextParent,
+						vmMap, nodes, bindings, rootController).execute();
 		} else if (v instanceof ChoiceResolution) {
 			nextParent = new AddChoiceResolution(toolModel.isVSpecResolutionMinimized(v)).init(bvruikernel, v, parent,
 					vmMap, nodes, bindings, rootController).execute();
