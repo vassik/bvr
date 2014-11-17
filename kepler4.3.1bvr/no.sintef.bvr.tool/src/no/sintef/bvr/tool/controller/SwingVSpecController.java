@@ -14,7 +14,6 @@ import javax.swing.JScrollPane;
 
 import org.eclipse.emf.ecore.EObject;
 
-import no.sintef.bvr.tool.context.Context;
 import no.sintef.bvr.tool.controller.command.AddBCLConstraint;
 import no.sintef.bvr.tool.controller.command.AddBVRModel;
 import no.sintef.bvr.tool.controller.command.AddChoice;
@@ -75,7 +74,7 @@ public class SwingVSpecController<
 		vspecBindings = new ArrayList<Pair<JComponent,JComponent>>();
 		rootController = controller;
 		
-		vSpecbvruikernel = new BVRUIKernel(vspecvmMap, rootController, null);
+		vSpecbvruikernel = new BVRUIKernel(rootController);
 		
         strategy = new VSpecLayoutStrategy(vspecNodes, vspecBindings);
 		vspecScrollPane = new JScrollPane(vSpecbvruikernel.getModelPanel(), JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);

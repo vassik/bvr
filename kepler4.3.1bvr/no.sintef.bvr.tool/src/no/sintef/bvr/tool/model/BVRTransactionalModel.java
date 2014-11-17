@@ -117,6 +117,7 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 	static private int choicCounter = 0;
 	static private int variableCount = 0;
 	static private int classifierCount = 0;
+	static private int resolutionCount = 0;
 	private NamedElement cutNamedElement = null;
 	private HashMap<NegResolution, PosResolution> buffer;
 	
@@ -819,7 +820,8 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 
 		if (variablityModel instanceof Choice) {
 			CommonUtility.setResolved(root, (VSpec) variablityModel);
-			root.setName(((NamedElement) variablityModel).getName());
+			root.setName(((NamedElement) variablityModel).getName() + "[" + resolutionCount +"]");
+			resolutionCount++;
 			ResolutionModelIterator.getInstance().iterateEmptyOnChildren(this, new AddResolution(), (VSpec) root.getResolvedChoice(), root, false);
 		} else {
 			throw new UserInputError("model must start with a choice");
@@ -1002,6 +1004,8 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 		if(destFile == null)
 			throw new UnexpectedException("destinition file is not defined for a product" + destFile);
 		
+		final File destinationFile = destFile;
+		final int resolutionIndex = index;
 		Context.eINSTANCE.getEditorCommands().executeSimpleExeCommand(new SimpleExeCommandInterface() {
 			
 			@Override
@@ -1012,7 +1016,7 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 				try {
 					Context.eINSTANCE.writeModelToFile(tmpModel, tmpModel.getFile());
 					Context.eINSTANCE.reloadModel(tmpModel);
-					executeProduct(tmpModel, (PosResolution) tmpModel.getBVRModel().getResolutionModels().get(index), destFile);
+					executeProduct(tmpModel, (PosResolution) tmpModel.getBVRModel().getResolutionModels().get(resolutionIndex), destinationFile);
 				} catch (Exception error) {
 					Context.eINSTANCE.logger.error("Failed to execute product, resason : " + error.getMessage(), error);
 					throw new RethrownException("Failed to execute product, resason : " + error.getMessage(), error);
