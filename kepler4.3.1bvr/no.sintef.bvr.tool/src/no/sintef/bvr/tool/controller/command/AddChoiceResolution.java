@@ -66,8 +66,9 @@ public class AddChoiceResolution implements Command {
         cp.addMouseListener(listener);
 		
         Choice resolvedChoice = (Choice) CommonUtility.getResolvedVSpec(c);
-        
-		String choicename = resolvedChoice.getName();
+        String choicename = "ERROR!!!";
+        if(resolvedChoice != null)
+		choicename = resolvedChoice.getName();
 		
         cp.setTitle((minContains?"(+) ":"") + choicename + " = " + (c instanceof PosResolution));
        

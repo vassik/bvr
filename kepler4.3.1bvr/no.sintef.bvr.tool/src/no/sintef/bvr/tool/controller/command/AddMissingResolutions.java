@@ -18,20 +18,20 @@ public class AddMissingResolutions implements ResCommand {
 	private VSpec target;
 	boolean unresolved;
 	private VSpecResolution parent;
+
 	/**
-	 * NOT TRANSACTIONAL
-	 * ONLY for use with nodes NOT added to model
+	 * NOT TRANSACTIONAL ONLY for use with nodes NOT added to model
 	 */
 	@Override
-	public ResCommand init(BVRToolModel  view, VSpec target, VSpecResolution parent, boolean onlyOneInstance) {
+	public ResCommand init(BVRToolModel view, VSpec target, VSpecResolution parent, boolean onlyOneInstance) {
 		this.view = view;
 		this.target = target;
 		this.parent = parent;
 		return this;
 	}
+
 	/**
-	 * NOT TRANSACTIONAL
-	 * ONLY for use with nodes NOT added to model
+	 * NOT TRANSACTIONAL ONLY for use with nodes NOT added to model
 	 */
 	@Override
 	public List<VSpecResolution> execute() {
@@ -40,24 +40,26 @@ public class AddMissingResolutions implements ResCommand {
 		int instances = 0;
 		int min = 0;
 
-		if(parent instanceof PosResolution) {
-			for (VSpecResolution x :((CompoundResolution) parent).getMembers()) {
+		if (parent instanceof PosResolution) {
+			for (VSpecResolution x : ((CompoundResolution) parent).getMembers()) {
 				if (x.getResolvedVSpec().equals(target)) {
 					thisResolution.add(x);
 					unresolved = false;
-					if(CommonUtility.isVSpecResolutionVClassifier(x)){
-						min = ((VClassifier)x.getResolvedVSpec()).getInstanceMultiplicity().getLower();
+					if (CommonUtility.isVSpecResolutionVClassifier(x)) {
+						min = ((VClassifier) x.getResolvedVSpec()).getInstanceMultiplicity().getLower();
 						instances++;
 					}
 				}
 			}
 
-			while(instances < min ){
+			while (instances < min) {
 				thisResolution.addAll((ArrayList<VSpecResolution>) (new AddResolution().init(view, target, parent, true)).execute());
 				instances++;
 			}
-			if(unresolved)
+			if (unresolved) {
 				thisResolution = (ArrayList<VSpecResolution>) (new AddResolution().init(view, target, parent, false)).execute();
+				System.out.println(target);
+			}
 		}
 		return thisResolution;
 	}

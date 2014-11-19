@@ -11,6 +11,7 @@ import bvr.CompoundResolution;
 import bvr.VNode;
 import bvr.VSpec;
 import bvr.VSpecResolution;
+import bvr.Variable;
 
 
 public class ResolutionModelIterator {
@@ -46,7 +47,9 @@ public class ResolutionModelIterator {
 
 		if (vsParent != null) {
 			for (VNode y : ((CompoundNode) vsParent).getMember()) {
-
+				for(Variable v : ((CompoundNode) vsParent).getVariable()){
+					command.init(view, v, vsrParent, onlyOneInstance).execute();
+				}
 				if (y instanceof VSpec) {
 					VSpec x = (VSpec) y;
 					command.init(view, x, vsrParent, onlyOneInstance);

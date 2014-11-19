@@ -879,8 +879,8 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 				InheritanceFacade.getInstance().passInheritance((ChoiceResolution)root, (root instanceof PosResolution), this);
 			}
 			else if(parent instanceof NegResolution){
-				Context.eINSTANCE.getEditorCommands().addChoiceResoulution(grandParent, (NegResolution) root);
-				InheritanceFacade.getInstance().passInheritance((ChoiceResolution)root, (root instanceof PosResolution), this);
+				//Context.eINSTANCE.getEditorCommands().addChoiceResoulution(grandParent, (NegResolution) root);
+				//InheritanceFacade.getInstance().passInheritance((ChoiceResolution)root, (root instanceof PosResolution), this);
 			}/* else if (parent instanceof VariableValueAssignment) {
 			}
 				Context.eINSTANCE.getEditorCommands().addVariableValueAssignment(grandParent, (VariableValueAssignment) root);

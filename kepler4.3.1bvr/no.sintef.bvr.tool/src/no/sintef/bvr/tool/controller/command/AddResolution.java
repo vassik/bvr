@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import no.sintef.bvr.common.CommonUtility;
+import no.sintef.bvr.tool.context.Context;
 import no.sintef.bvr.tool.controller.BVRNotifiableController;
 import no.sintef.bvr.tool.controller.BVRResolutionToolView;
 import no.sintef.bvr.tool.model.BVRToolModel;
+import no.sintef.bvr.tool.model.PrimitiveTypeFacade;
 import bvr.BvrFactory;
 import bvr.Choice;
 import bvr.ChoiceResolution;
@@ -20,6 +22,7 @@ import bvr.VClassifier;
 //import bvr.VInstance;
 import bvr.VSpec;
 import bvr.VSpecResolution;
+import bvr.ValueResolution;
 import bvr.Variable;
 //import bvr.VariableValueAssignment;
 //import bvr.common.PrimitiveTypeHandler;
@@ -45,6 +48,7 @@ public class AddResolution implements ResCommand{
 	@Override
 	public List<VSpecResolution> execute() {
 		// TODO Auto-generated method stub
+		
 		List<VSpecResolution> thisResolution = new ArrayList<VSpecResolution>();
 		if (target instanceof Choice) {
 			thisResolution.add(addResolution((Choice) target, parent));
@@ -62,6 +66,7 @@ public class AddResolution implements ResCommand{
 			min = 0;
 		}
 		if (target instanceof Variable) {
+			
 			thisResolution.add(addResolution((Variable) target, parent));
 		}
 
@@ -93,22 +98,10 @@ public class AddResolution implements ResCommand{
 
 	// resolve Variable
 	private VSpecResolution addResolution(Variable vSpecFound, VSpecResolution parent) {
-		return null;
-	
-		//VSpecResolution thisResolution = BvrFactory.eINSTANCE.createValueResolution();
-		//thisResolution.setName(target.getName());
-		// Value		
-		/*
-		PrimitiveValueSpecification value = (Primi.getInstance().makeValueSpecification((Variable) vSpecFound));
-		PrimitiveTypeEnum type = ((PrimitveType) ((Variable)vSpecFound).getType()).getType();
-		// Try searching for a type
-		PrimitveType vt = PrimitiveTypeHandler.getInstance().makeType(view.getCU(), type);
-		value.setType(vt);
 		
-		((VariableValueAssignment)thisResolution).setValue(value);
-		thisResolution.setResolvedVSpec(vSpecFound);
-		parent.getChild().add(thisResolution);
-*/		
-		//return thisResolution;
+		ValueResolution thisResolution = PrimitiveTypeFacade.getInstance().createDefaultValueResolution(vSpecFound);
+		//Context.eINSTANCE.getEditorCommands().addValueResolution((CompoundResolution) parent, valueResolution);
+		((CompoundResolution)parent).getMembers().add(thisResolution);
+		return thisResolution;
 	}
 }
