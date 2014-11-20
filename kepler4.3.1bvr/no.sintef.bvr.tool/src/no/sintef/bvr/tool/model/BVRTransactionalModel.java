@@ -995,7 +995,19 @@ public class BVRTransactionalModel extends BVRToolModel implements ResourceObser
 		
 		return messages;
 	}
-	
+	@Override
+	public boolean hasResolvedChildren(NamedElement namedElement) {
+		if(namedElement instanceof CompoundResolution){
+			for(NamedElement e : ((CompoundResolution)namedElement).getMembers()){
+				if (e instanceof PosResolution || e instanceof ValueResolution){
+					System.out.println(e);
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 	@Override
 	public void executeResolution(File destFile, int index) {
 		if(index < 0 || getBVRModel().getResolutionModels().size() < index)

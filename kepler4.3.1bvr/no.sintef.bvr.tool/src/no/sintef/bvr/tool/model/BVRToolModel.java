@@ -552,4 +552,8 @@ abstract public class BVRToolModel {
 	public void clearHighlightedObjects() {
 		throw new UnexpectedException("Are you using default implementation?!");
 	}
+
+	public boolean hasResolvedChildren(NamedElement namedElement) {
+		throw new UnexpectedException("Are you using default implementation?!");
+	}
 }

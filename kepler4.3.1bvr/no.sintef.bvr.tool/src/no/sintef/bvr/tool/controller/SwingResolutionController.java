@@ -524,4 +524,9 @@ public class SwingResolutionController<GUI_NODE extends JComponent, MODEL_OBJECT
 		int index = resPane.getSelectedIndex();
 		toolModel.executeResolution((File) destFile, index);
 	}
+
+	@Override
+	public boolean hasResolvedChildren(GUI_NODE toToggle) {
+		return toolModel.hasResolvedChildren(getNamedElementByJComponent(toToggle));
+	}
 }

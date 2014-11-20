@@ -78,4 +78,6 @@ public interface ResolutionControllerInterface<GUI_NODE, MODEL_OBJECT, SERIALIZA
 			GUI_NODE component);
 
 	public void executeProduct(SERIALIZABLE destFile);
+
+	public boolean hasResolvedChildren(GUI_NODE toToggle);
 }
