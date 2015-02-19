@@ -38,4 +38,5 @@ Import-Package: no.sintef.bvr.engine.interfaces.common,
  org.eclipse.ui.part,
  org.eclipse.ui.plugin
 Bundle-ClassPath: .
+Export-Package: no.sintef.bvr.ui.editor.mvc.realization.selection
 
