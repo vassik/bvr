@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.ISelectionProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 public class RealizationSelectionProvider implements ISelectionProvider {
 	
@@ -36,6 +37,9 @@ public class RealizationSelectionProvider implements ISelectionProvider {
 	@Override
 	public void setSelection(ISelection selection) {
 		currentSelection = selection;
+		for(ISelectionChangedListener listener : selectionListener) {
+			listener.selectionChanged(new SelectionChangedEvent(this, selection));
+		}
 		
 	}
 
