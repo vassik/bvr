@@ -38,6 +38,11 @@
                      commandId="no.sintef.bvr.ui.editor.mvc.realization.command1"
                      style="push">
                </command>
+               <command
+                     commandId="no.sintef.bvr.ui.editor.mvc.realization.command2"
+                     label="Test Property"
+                     style="push">
+               </command>
             </menu>
          </menu>
       </menuContribution>
@@ -53,6 +58,11 @@
             defaultHandler="no.sintef.bvr.ui.editor.mvc.realization.action.CopyModel"
             id="no.sintef.bvr.ui.editor.mvc.realization.command1"
             name="Copy Model">
+      </command>
+      <command
+            defaultHandler="no.sintef.bvr.ui.editor.mvc.realization.action.TestProperty"
+            id="no.sintef.bvr.ui.editor.mvc.realization.command2"
+            name="TestProperty">
       </command>
    </extension>
 </plugin>
