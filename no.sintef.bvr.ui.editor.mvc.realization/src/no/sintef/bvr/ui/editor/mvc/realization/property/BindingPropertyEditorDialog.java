@@ -54,16 +54,17 @@ public class BindingPropertyEditorDialog extends Dialog {
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Group grpAsdasd = new Group(shell, SWT.BORDER);
-		grpAsdasd.setText("asdasd");
+		grpAsdasd.setText("Binding");
+		
 		GridLayout gl_grpAsdasd = new GridLayout(2, true);
 		grpAsdasd.setLayout(gl_grpAsdasd);
 		
 		Label lblNewLabel = new Label(grpAsdasd, SWT.NONE);
 		lblNewLabel.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-		lblNewLabel.setText("New Label");
+		lblNewLabel.setText("Properties:");
 		
 		Label lblNewLabel_1 = new Label(grpAsdasd, SWT.NONE);
-		lblNewLabel_1.setText("New Label");
+		lblNewLabel_1.setText("Objects:");
 		
 		List list = new List(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
 		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
@@ -71,14 +72,14 @@ public class BindingPropertyEditorDialog extends Dialog {
 		list.setLayoutData(gd_list);
 		
 		List list_1 = new List(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
-		GridData gd_list_1 = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		GridData gd_list_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_list_1.widthHint = 121;
 		list_1.setLayoutData(gd_list_1);
 		new Label(grpAsdasd, SWT.NONE);
 		
 		Button btnNewButton = new Button(grpAsdasd, SWT.NONE);
 		btnNewButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-		btnNewButton.setText("New Button");
+		btnNewButton.setText("Set");
 
 	}
 }
