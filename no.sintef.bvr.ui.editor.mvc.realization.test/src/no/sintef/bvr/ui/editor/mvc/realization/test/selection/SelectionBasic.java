@@ -2,7 +2,7 @@ package no.sintef.bvr.ui.editor.mvc.realization.test.selection;
 
 import static org.junit.Assert.*;
 import no.sintef.bvr.ui.editor.mvc.realization.selection.RealizationSelectionProvider;
-import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingSelection;
+import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingSelectionAdapter;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.viewers.ISelection;
@@ -31,7 +31,7 @@ public class SelectionBasic {
 		
 		ISelectionProvider realizationSelection = new RealizationSelectionProvider();
 		realizationSelection.addSelectionChangedListener(changedListener);
-		IAdaptable selectionAdapter = new BindingSelection();
+		IAdaptable selectionAdapter = new BindingSelectionAdapter();
 		IStructuredSelection selection = new StructuredSelection(selectionAdapter);
 		realizationSelection.setSelection(selection);
 		

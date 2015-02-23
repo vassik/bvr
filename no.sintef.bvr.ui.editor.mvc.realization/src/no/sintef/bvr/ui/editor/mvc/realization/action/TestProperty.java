@@ -1,6 +1,6 @@
 package no.sintef.bvr.ui.editor.mvc.realization.action;
 
-import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingSelection;
+import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingSelectionAdapter;
 import no.sintef.bvr.ui.editor.mvc.realization.selection.RealizationSelectionProvider;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -34,7 +34,7 @@ public class TestProperty extends AbstractHandler {
 		
 
 		
-		IAdaptable selection = new BindingSelection();
+		IAdaptable selection = new BindingSelectionAdapter();
 		ISelectionProvider currentSelectionProvider = editor.getSite().getSelectionProvider();
 		currentSelectionProvider.setSelection(new StructuredSelection(selection));
 		return null;
