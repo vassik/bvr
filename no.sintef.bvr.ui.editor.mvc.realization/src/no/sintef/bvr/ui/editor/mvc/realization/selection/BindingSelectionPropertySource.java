@@ -7,12 +7,19 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import bvr.BoundaryElementBinding;
 import bvr.NamedElement;
+import bvr.ToBinding;
 
 public class BindingSelectionPropertySource implements IPropertySource {
 
 
-	public BindingSelectionPropertySource(BoundaryElementBinding binding, List<NamedElement> boundaryElements) {
-	
+	private static final String PROPERTY_BINDING = "property.binding";
+	private IPropertyDescriptor[] propertyDescriptors;
+	private BoundaryElementBinding binding;
+	private List<NamedElement> boundaryElements;
+
+	public BindingSelectionPropertySource(BoundaryElementBinding _binding, List<NamedElement> _boundaryElements) {
+		binding = _binding;
+		boundaryElements = _boundaryElements;
 	}
 	
 	@Override
@@ -23,8 +30,14 @@ public class BindingSelectionPropertySource implements IPropertySource {
 
 	@Override
 	public IPropertyDescriptor[] getPropertyDescriptors() {
-		// TODO Auto-generated method stub
-		return null;
+		String label = (binding instanceof ToBinding) ? "ToBinding" : "FromBinding";
+		
+		IPropertyDescriptor descriptor = new BindingPropertyDescriptor(PROPERTY_BINDING, label);
+		
+		propertyDescriptors = new IPropertyDescriptor[] {
+				descriptor
+		};
+		return propertyDescriptors;
 	}
 
 	@Override
