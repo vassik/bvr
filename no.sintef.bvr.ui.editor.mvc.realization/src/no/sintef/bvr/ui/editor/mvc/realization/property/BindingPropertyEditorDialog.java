@@ -2,11 +2,13 @@ package no.sintef.bvr.ui.editor.mvc.realization.property;
 
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.FillLayout;
@@ -53,6 +55,15 @@ public class BindingPropertyEditorDialog extends Dialog {
 		shell.setText(getText());
 		shell.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
+        final Monitor primary = shell.getDisplay().getPrimaryMonitor();
+        final Rectangle bounds = primary.getBounds();
+        final Rectangle rect = shell.getBounds();
+        final int x = bounds.x + (bounds.width - rect.width) / 2;
+        final int y = bounds.y + (bounds.height - rect.height) / 2;
+        shell.setLocation(x, y);
+
+		
+		
 		Group grpAsdasd = new Group(shell, SWT.BORDER);
 		grpAsdasd.setText("Binding");
 		
@@ -67,7 +78,7 @@ public class BindingPropertyEditorDialog extends Dialog {
 		lblNewLabel_1.setText("Objects:");
 		
 		List list = new List(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
-		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_list.widthHint = 149;
 		list.setLayoutData(gd_list);
 		
