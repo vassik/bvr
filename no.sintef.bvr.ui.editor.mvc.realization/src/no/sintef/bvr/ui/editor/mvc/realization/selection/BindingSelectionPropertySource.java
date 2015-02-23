@@ -33,6 +33,8 @@ public class BindingSelectionPropertySource implements IPropertySource {
 		String label = (binding instanceof ToBinding) ? "ToBinding" : "FromBinding";
 		
 		IPropertyDescriptor descriptor = new BindingPropertyDescriptor(PROPERTY_BINDING, label);
+		((BindingPropertyDescriptor) descriptor).setCurrentBinding(binding);
+		((BindingPropertyDescriptor) descriptor).setBoundaryCandidates(boundaryElements);
 		
 		propertyDescriptors = new IPropertyDescriptor[] {
 				descriptor
