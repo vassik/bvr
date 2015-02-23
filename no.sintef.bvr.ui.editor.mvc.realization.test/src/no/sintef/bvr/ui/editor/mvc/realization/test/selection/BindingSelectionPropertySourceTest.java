@@ -4,10 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingPropertyCellEditor;
 import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingPropertyDescriptor;
 import no.sintef.bvr.ui.editor.mvc.realization.selection.BindingSelectionPropertySource;
 
 import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 import org.junit.After;
@@ -36,13 +38,25 @@ public class BindingSelectionPropertySourceTest {
 	@Test
 	public void testPropertyDescriptor() {
 		 IPropertyDescriptor[] descriptors = bindingPropSource.getPropertyDescriptors();
-		 assertNotNull("not descriptor found", descriptors);
+		 assertNotNull("no descriptor found", descriptors);
 		 
-		 assertEquals("No many descriptors", 1, descriptors.length);
+		 assertEquals("To many descriptors", 1, descriptors.length);
 		 
 		 IPropertyDescriptor descriptor = descriptors[0];
 		 
 		 assertTrue("wrong descriptor", descriptor instanceof BindingPropertyDescriptor);
+	}
+	
+	@Test
+	public void testPropertyEditorDescriptorEditor() {
+		IPropertyDescriptor[] descriptors = bindingPropSource.getPropertyDescriptors();
+		assertEquals(1, descriptors.length);
+		
+		BindingPropertyDescriptor descriptor = (BindingPropertyDescriptor) descriptors[0];
+		
+		CellEditor editor = descriptor.createPropertyEditor(null);
+		 
+		 assertTrue("wrong cell editor", editor instanceof BindingPropertyCellEditor);
 	}
 
 }
