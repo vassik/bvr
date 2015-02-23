@@ -36,6 +36,7 @@ public class RealizationSelectionProvider implements ISelectionProvider {
 
 	@Override
 	public void setSelection(ISelection selection) {
+		System.out.println("RealizationSelectionProvider.setSelection " + selectionListener);
 		currentSelection = selection;
 		for(ISelectionChangedListener listener : selectionListener) {
 			listener.selectionChanged(new SelectionChangedEvent(this, selection));

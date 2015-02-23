@@ -17,6 +17,8 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Composite;
+
 import no.sintef.bvr.engine.common.SubstitutionEngine;
 import no.sintef.bvr.tool.context.Context;
 import no.sintef.bvr.tool.interfaces.observer.ResourceSubject;
@@ -26,6 +28,7 @@ import no.sintef.bvr.ui.editor.common.RefreshViewEvent;
 import no.sintef.bvr.ui.editor.common.MVCEditor;
 import no.sintef.bvr.ui.editor.common.observer.ResourceResourceSavedSubjectMap;
 import no.sintef.bvr.ui.editor.common.observer.ResourceResourceSetSubjectMap;
+import no.sintef.bvr.ui.editor.mvc.realization.selection.RealizationSelectionProvider;
 
 
 public class MVCRealizationEditor extends MVCEditor {
@@ -54,6 +57,12 @@ public class MVCRealizationEditor extends MVCEditor {
 		sbjct.attach(this);
 	}
 
+	@Override
+	public void createPartControl(Composite parent) {
+		super.createPartControl(parent);
+		getSite().setSelectionProvider(new RealizationSelectionProvider());
+	}
+	
 	@Override
 	public void update(ResourceSubject subject) {	
 		if(subject instanceof ResourceSetEditedSubject){
