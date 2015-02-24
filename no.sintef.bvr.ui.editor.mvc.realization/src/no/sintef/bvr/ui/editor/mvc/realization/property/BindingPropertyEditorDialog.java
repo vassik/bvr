@@ -1,5 +1,18 @@
 package no.sintef.bvr.ui.editor.mvc.realization.property;
 
+import java.util.ArrayList;
+
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.BoundaryLabelProvider;
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.BoundaryListContentProvider;
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.BoundaryListViewerModel;
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.IBoundaryListViewerModel;
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.ISelectedBoundary;
+
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ListViewer;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.swt.widgets.Dialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Monitor;
@@ -14,9 +27,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Group;
 
+import bvr.NamedElement;
+
 public class BindingPropertyEditorDialog extends Dialog {
 
-	protected Object result;
+	protected ISelectedBoundary result;
 	protected Shell shell;
 
 	/**
@@ -43,6 +58,7 @@ public class BindingPropertyEditorDialog extends Dialog {
 				display.sleep();
 			}
 		}
+		System.out.println("Result!!!!" + result);
 		return result;
 	}
 
@@ -77,16 +93,49 @@ public class BindingPropertyEditorDialog extends Dialog {
 		Label lblNewLabel_1 = new Label(grpAsdasd, SWT.NONE);
 		lblNewLabel_1.setText("Objects:");
 		
-		List list = new List(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		ListViewer list = new ListViewer(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		List list_2 = list.getList();
+		list_2.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		GridData gd_list = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_list.widthHint = 149;
-		list.setLayoutData(gd_list);
+		//list.setLayoutData(gd_list);
 		
-		List list_1 = new List(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
+		final IBoundaryListViewerModel boundaryList = new BoundaryListViewerModel(new ArrayList<NamedElement>());
+		
+		list.setContentProvider(new BoundaryListContentProvider());
+		list.setLabelProvider(new BoundaryLabelProvider());
+		list.setInput(new BoundaryListViewerModel(null));
+		
+		final ListViewer list_1 = new ListViewer(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
+		
+		list.addSelectionChangedListener(new ISelectionChangedListener() {
+			
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+				Object slectedObject = selection.getFirstElement();
+				System.out.println(slectedObject);
+				boundaryList.addBoundary((NamedElement)slectedObject);
+				/*ArrayList<NamedElement> l = new ArrayList<NamedElement>();
+				l.add((NamedElement) slectedObject);
+				list_1.setInput(new BoundaryListViewerModel(l));*/
+				list_1.refresh();
+				
+			}
+		});
+		
+		
+		//ListViewer list_1 = new ListViewer(grpAsdasd, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
+		List list_3 = list_1.getList();
+		list_3.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		GridData gd_list_1 = new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);
 		gd_list_1.widthHint = 121;
-		list_1.setLayoutData(gd_list_1);
+		//list_1.setLayoutData(gd_list_1);
 		new Label(grpAsdasd, SWT.NONE);
+		
+		list_1.setContentProvider(new BoundaryListContentProvider());
+		list_1.setLabelProvider(new BoundaryLabelProvider());
+		list_1.setInput(boundaryList);
 		
 		Button btnNewButton = new Button(grpAsdasd, SWT.NONE);
 		btnNewButton.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
