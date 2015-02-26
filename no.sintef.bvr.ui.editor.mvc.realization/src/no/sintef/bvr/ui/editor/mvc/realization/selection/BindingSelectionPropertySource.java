@@ -2,6 +2,8 @@ package no.sintef.bvr.ui.editor.mvc.realization.selection;
 
 import java.util.List;
 
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.SelectedBoundary;
+
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.IPropertySource;
 
@@ -44,26 +46,25 @@ public class BindingSelectionPropertySource implements IPropertySource {
 
 	@Override
 	public Object getPropertyValue(Object id) {
-		// TODO Auto-generated method stub
-		return null;
+		System.out.println("Object getPropertyValue(Object id) " + id);
+		return new SelectedBoundary();
 	}
 
 	@Override
 	public boolean isPropertySet(Object id) {
-		// TODO Auto-generated method stub
-		return false;
+		System.out.println("public boolean isPropertySet(Object id) " + id);
+		return true;
 	}
 
 	@Override
 	public void resetPropertyValue(Object id) {
 		// TODO Auto-generated method stub
-
+		System.out.println("public void resetPropertyValue(Object id) " + id);
 	}
 
 	@Override
 	public void setPropertyValue(Object id, Object value) {
-		// TODO Auto-generated method stub
-
+		System.out.println("public void setPropertyValue(Object id, Object value) " + id + " "+ value);
 	}
 
 }

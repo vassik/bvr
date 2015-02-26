@@ -7,6 +7,7 @@ import no.sintef.bvr.ui.editor.mvc.realization.property.model.BoundaryListConten
 import no.sintef.bvr.ui.editor.mvc.realization.property.model.BoundaryListViewerModel;
 import no.sintef.bvr.ui.editor.mvc.realization.property.model.IBoundaryListViewerModel;
 import no.sintef.bvr.ui.editor.mvc.realization.property.model.ISelectedBoundary;
+import no.sintef.bvr.ui.editor.mvc.realization.property.model.SelectedBoundary;
 
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -31,7 +32,7 @@ import bvr.NamedElement;
 
 public class BindingPropertyEditorDialog extends Dialog {
 
-	protected ISelectedBoundary result;
+	protected ISelectedBoundary result = new SelectedBoundary();
 	protected Shell shell;
 
 	/**
